@@ -20,8 +20,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class AccountsServiceImpl implements IAccountsService {
 
-    private AccountsRepository accountsRepository;
-    private CustomerRepository customerRepository;
+    private final AccountsRepository accountsRepository;
+    private final CustomerRepository customerRepository;
 
     @Override
     public void createAccount(CustomerDto customerDto) {
