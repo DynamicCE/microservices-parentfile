@@ -6,6 +6,7 @@ public final class AccountsConstants {
 
     }
 
+    public static final String SYSTEM_USER = "erkan";
     public static final String SAVINGS = "Savings";
     public static final String ADDRESS = "123 Bizim Köy , Eryaman";
     public static final String STATUS_201 = "201";
