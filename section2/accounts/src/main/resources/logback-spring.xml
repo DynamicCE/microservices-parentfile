@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Hesap işlemleri için -->
+    <appender name="ACCOUNT_OPS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/account-ops.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/account-ops-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Kritik işlemler için -->
+    <appender name="CRITICAL_OPS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/critical-ops.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/critical-ops-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Logger tanımlamaları -->
+    <logger name="account-ops" level="INFO" additivity="false">
+        <appender-ref ref="ACCOUNT_OPS"/>
+    </logger>
+
+    <logger name="critical-ops" level="INFO" additivity="false">
+        <appender-ref ref="CRITICAL_OPS"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="ACCOUNT_OPS"/>
+    </root>
+</configuration> 
