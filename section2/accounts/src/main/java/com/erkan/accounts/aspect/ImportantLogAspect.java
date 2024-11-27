@@ -29,71 +29,88 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ImportantLogAspect {
 
-    private static final Logger logger = LoggerFactory.getLogger("important-ops");
-    private final ObjectMapper objectMapper;
-    private final HttpServletRequest request;
-    private final Environment environment;
+        private static final Logger logger = LoggerFactory.getLogger("important-ops");
+        private final ObjectMapper objectMapper;
+        private final HttpServletRequest request;
+        private final Environment environment;
 
-    @Around("@annotation(importantLog)")
-    public Object logImportant(ProceedingJoinPoint joinPoint, ImportantLog importantLog)
-            throws Throwable {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        String methodName = signature.getName();
-        long startTime = System.currentTimeMillis();
-        String correlationId = UUID.randomUUID().toString();
+        @Around("@annotation(importantLog)")
+        public Object logImportant(ProceedingJoinPoint joinPoint, ImportantLog importantLog)
+                        throws Throwable {
+                MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+                String methodName = signature.getName();
+                long startTime = System.currentTimeMillis();
+                String correlationId = UUID.randomUUID().toString();
 
-        MDC.put("correlationId", correlationId);
+                MDC.put("correlationId", correlationId);
 
-        try {
-            // Başlangıç bilgileri
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String username = auth != null ? auth.getName() : "anonymous";
-            String clientIP = request.getRemoteAddr();
-            Map<String, String> headers = Collections.list(request.getHeaderNames()).stream()
-                    .collect(Collectors.toMap(headerName -> headerName, request::getHeader));
+                try {
+                        // Başlangıç bilgileri
+                        Authentication auth =
+                                        SecurityContextHolder.getContext().getAuthentication();
+                        String username = auth != null ? auth.getName() : "anonymous";
+                        String clientIP = request.getRemoteAddr();
+                        Map<String, String> headers = Collections.list(request.getHeaderNames())
+                                        .stream().collect(Collectors.toMap(headerName -> headerName,
+                                                        request::getHeader));
 
-            // Memory kullanımı
-            Runtime runtime = Runtime.getRuntime();
-            long usedMemory = (runtime.totalMemory() - runtime.freeMemory()) / 1024 / 1024;
+                        // Memory kullanımı
+                        Runtime runtime = Runtime.getRuntime();
+                        long usedMemory = (runtime.totalMemory() - runtime.freeMemory()) / 1024
+                                        / 1024;
 
-            // Ortam bilgisi
-            String activeProfile =
-                    environment.getActiveProfiles().length > 0 ? environment.getActiveProfiles()[0]
-                            : "default";
+                        // Ortam bilgisi
+                        String activeProfile = environment.getActiveProfiles().length > 0
+                                        ? environment.getActiveProfiles()[0]
+                                        : "default";
 
-            // Detaylı başlangıç logu
-            logger.warn(
-                    "🚀 İşlem Başlıyor\n" + "Metod: {}\n" + "Kullanıcı: {}\n" + "IP: {}\n"
-                            + "Headers: {}\n" + "Memory: {} MB\n" + "Ortam: {}\n"
-                            + "CorrelationId: {}\n" + "Parametreler: {}",
-                    methodName, username, clientIP, objectMapper.writeValueAsString(headers),
-                    usedMemory, activeProfile, correlationId,
-                    objectMapper.writeValueAsString(joinPoint.getArgs()));
+                        // Detaylı başlangıç logu
+                        logger.warn("""
+                                        🚀 İşlem Başlıyor
+                                        Metod: {}
+                                        Kullanıcı: {}
+                                        IP: {}
+                                        Headers: {}
+                                        Memory: {} MB
+                                        Ortam: {}
+                                        CorrelationId: {}
+                                        Parametreler: {}""", methodName, username, clientIP,
+                                        objectMapper.writeValueAsString(headers), usedMemory,
+                                        activeProfile, correlationId,
+                                        objectMapper.writeValueAsString(joinPoint.getArgs()));
 
-            Object result = joinPoint.proceed();
+                        Object result = joinPoint.proceed();
 
-            long duration = System.currentTimeMillis() - startTime;
+                        long duration = System.currentTimeMillis() - startTime;
 
-            // Performans kontrolü
-            String performanceWarning = duration > 1000 ? "⚠️ YAVAŞ İŞLEM!" : "✅ Normal süre";
+                        // Performans kontrolü
+                        String performanceWarning =
+                                        duration > 1000 ? "⚠️ YAVAŞ İŞLEM!" : "✅ Normal süre";
 
-            // Sonuç logu
-            logger.warn(
-                    "✅ İşlem Tamamlandı\n" + "Metod: {}\n" + "Süre: {} ms {}\n" + "Sonuç: {}\n"
-                            + "CorrelationId: {}",
-                    methodName, duration, performanceWarning,
-                    objectMapper.writeValueAsString(result), correlationId);
+                        // Sonuç logu
+                        logger.warn("""
+                                        ✅ İşlem Tamamlandı
+                                        Metod: {}
+                                        Süre: {} ms {}
+                                        Sonuç: {}
+                                        CorrelationId: {}
+                                        """, methodName, duration, performanceWarning,
+                                        objectMapper.writeValueAsString(result), correlationId);
 
-            return result;
-        } catch (Exception e) {
-            logger.error(
-                    "❌ Hata Oluştu\n" + "Metod: {}\n" + "Hata: {}\n" + "Zaman: {}\n" + "Stack: {}\n"
-                            + "CorrelationId: {}",
-                    methodName, e.getMessage(), LocalDateTime.now(), e.getStackTrace(),
-                    correlationId);
-            throw e;
-        } finally {
-            MDC.remove("correlationId");
+                        return result;
+                } catch (Exception e) {
+                        logger.error("""
+                                        ❌ Hata Oluştu
+                                        Metod: {}
+                                        Hata: {}
+                                        Zaman: {}
+                                        Stack: {}
+                                        CorrelationId: {}
+                                        """, methodName, e.getMessage(), LocalDateTime.now(),
+                                        e.getStackTrace(), correlationId);
+                        throw e;
+                } finally {
+                        MDC.remove("correlationId");
+                }
         }
-    }
 }
