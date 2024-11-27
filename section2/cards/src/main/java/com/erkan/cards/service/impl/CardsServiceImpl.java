@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CardsServiceImpl implements ICardsService {
 
-    private CardsRepository cardsRepository;
+    private final CardsRepository cardsRepository;
 
     @Override
     public void createCard(String mobileNumber) {
