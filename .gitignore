@@ -1,1 +1,42 @@
+cat << EOF > .gitignore
+# IDE - IntelliJ
 .idea/
+*.iml
+*.iws
+*.ipr
+
+# IDE - VS Code
+.vscode/
+.settings/
+.classpath
+.project
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+*.jar
+*.war
+*.nar
+*.ear
+
+# Logs
+logs/
+*.log
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Spring Boot
+**/application-local.properties
+**/application-local.yml
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+EOF
