@@ -13,14 +13,13 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-@ToString
 public class BaseEntity {
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
