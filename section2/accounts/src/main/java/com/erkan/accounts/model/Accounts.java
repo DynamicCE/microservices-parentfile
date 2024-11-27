@@ -1,17 +1,24 @@
 package com.erkan.accounts.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@NoArgsConstructor
+@Entity
+@Getter @Setter
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class Accounts extends BaseEntity {
-    private Long customerId;
+
+    @Id
     private Long accountNumber;
+    
+    private Long customerId;
+    
     private String accountType;
+    
     private String branchAddress;
 }
