@@ -19,7 +19,14 @@ import com.erkan.cards.dto.ErrorResponseDto;
 import com.erkan.cards.dto.ResponseDto;
 import com.erkan.cards.service.ICardsService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 
 @Tag(name = "CRUD REST APIs for Cards in EazyBank",
