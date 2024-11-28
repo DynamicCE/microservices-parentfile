@@ -5,11 +5,17 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Schema(name = "Customer", description = "Schema to hold Customer and Account information")
 public class CustomerDto {
+
+    private Long customerId;
 
     @Schema(description = "Name of the customer", example = "Erkan Murat")
     @NotEmpty(message = "Name cannot be a null or empty")
@@ -22,7 +28,8 @@ public class CustomerDto {
     private String email;
 
     @Schema(description = "Mobile number of the customer")
-    @Pattern(regexp = "^(\\+90|90|0)?5\\d{9}$", message = "Mobile number must be a valid Turkish phone number")
+    @Pattern(regexp = "^(\\+90|90|0)?5\\d{9}$",
+            message = "Mobile number must be a valid Turkish phone number")
     private String mobileNumber;
 
     private AccountsDto accountsDto;
