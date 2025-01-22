@@ -1,0 +1,33 @@
+services:
+  accounts:
+    image: "icouldnotfindanynick/accounts:0.0.1-SNAPSHOT"
+    container_name: accounts-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700M
+  loans:
+    image: "icouldnotfindanynick/loans:0.0.1-SNAPSHOT"
+    container_name: loans-ms
+    ports:
+      - "8090:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700M
+  cards:
+    image: "icouldnotfindanynick/cards:0.0.1-SNAPSHOT"
+    container_name: cards-ms
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 700M
+    
+
+networks:
+  microservices-network:
+    driver: bridge
